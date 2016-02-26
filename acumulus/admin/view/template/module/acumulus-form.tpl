@@ -2,11 +2,8 @@
 /** @var Siel\Acumulus\Shop\ConfigForm $form */
 /** @var Siel\Acumulus\Helpers\FormRenderer $formRenderer */
 /** @var $header */
-/** @var $column_left */
-/** @var $button_icon */
 /** @var $button_save */
 /** @var $button_cancel */
-/** @var array $batchLink */
 /** @var $cancel */
 /** @var $heading_title */
 /** @var $breadcrumbs */
@@ -16,43 +13,51 @@
 /** @var string $action */
 /** @var $footer */
 ?>
-<?php echo $header; ?><?php echo $column_left; ?>
+<?php echo $header; ?>
 <div id="content">
-  <div class="page-header">
-    <div class="container-fluid">
-      <div class="pull-right">
-        <button type="submit" form="form-account" data-toggle="tooltip" title="<?php echo $button_save; ?>" class="btn btn-primary"><i class="fa <?php echo $button_icon ?>"></i></button>
-        <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="<?php echo $button_cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i></a>
-      </div>
-      <h1><?php echo $heading_title; ?></h1>
-      <ul class="breadcrumb">
+    <div class="breadcrumb">
         <?php foreach ($breadcrumbs as $breadcrumb) { ?>
-        <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
+        <?php echo $breadcrumb['separator']; ?><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a>
         <?php } ?>
-      </ul>
     </div>
-  </div>
-  <div class="container-fluid">
-    <?php foreach ($success as $message) { ?>
-    <div class="alert alert-success"><i class="fa fa-check-circle"></i> <?php echo $message; ?>
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <?php if ($error_messages) { ?>
+    <div class="warning">
+        <?php if (is_array($error_messages)) { ?>
+        <ul>
+            <?php foreach($error_messages as $message) { ?>
+            <li><?php echo $message; ?></li>
+            <?php } ?>
+        </ul>
+        <?php } else { ?>
+        <?php echo $error_messages; ?>
+        <?php } ?>
     </div>
     <?php } ?>
-    <?php foreach ($error_warnings as $error_warning) { ?>
-    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> <?php echo $error_warning; ?>
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <?php if ($success_messages) { ?>
+    <div class="success">
+        <?php if (is_array($success_messages)) { ?>
+        <ul>
+            <?php foreach($success_messages as $message) { ?>
+            <li><?php echo $message; ?></li>
+            <?php } ?>
+        </ul>
+        <?php } else { ?>
+        <?php echo $success_messages; ?>
+        <?php } ?>
     </div>
     <?php } ?>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-pencil"></i> <?php echo $text_edit; ?></h3>
-      </div>
-      <div class="panel-body">
-        <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-acumulus" class="form-horizontal">
-          <?php echo $formRenderer->render($form) ?>
-        </form>
-      </div>
+    <div class="box">
+        <div class="heading">
+            <h1><!--suppress HtmlUnknownTarget --><img src="view/image/module.png" alt=""/> <?php echo $page_title; ?></h1>
+            <div class="buttons">
+                <a onclick="$('#form').submit();" class="button"><?php echo $button_save; ?></a>
+                <a onclick="location = '<?php echo $cancel; ?>';" class="button"><?php echo $button_cancel; ?></a>
+            </div>
+        </div>
+        <div class="content">
+            <form action="<?= $action; ?>" method="post" enctype="multipart/form-data" id="form">
+                <?php echo $formRenderer->render($form) ?>
+            </form>
+        </div>
     </div>
-  </div>
-</div>
-<?php echo $footer; ?>
+    <?php echo $footer; ?>

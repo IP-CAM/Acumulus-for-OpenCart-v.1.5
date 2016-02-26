@@ -1,62 +1,44 @@
+.form-element {
+    margin-bottom: 1em;
+}
+
 h2 {
-  margin-top: 2em;
+    margin-top: 3em;
 }
 
 form h2:first-child {
-  margin-top: 0;
+    margin-top: 1em;
 }
 
-.form-horizontal legend.form-group {
-  margin-top: 2em;
-  border-top: solid 2px #e5e5e5;
-  border-bottom-width: 0;
-  padding-left: 15px;
+label, .label {
+    display: inline-block;
+    width: 12em;
 }
 
-.form-horizontal .control-label {
-  padding-top: 0;
+.required {
+    margin-left: 0.5em;
 }
 
-.form-horizontal .radio, .form-horizontal .checkbox {
-  padding-top: 0;
-  padding-left: 20px;
-  overflow: auto;
+.desc {
+    margin-top: 0.1em;
+    margin-left: 12em; /* should be the same as width of label. */
+    font-style: italic;
 }
 
-.form-group > span.control-label {
-  font-weight: bold;
-  text-align: left;
+.form-element-radios, .form-element-checkboxes {
+    display: inline-block;
+    width: auto;
+    vertical-align: top;
 }
 
-.form-group.required > span.control-label::before {
-  color: #f00;
-  content: "* ";
-  font-weight: bold;
+.form-element-radios input, .form-element-checkboxes input {
+    float: left;
+    clear: left;
+    margin-bottom: 0.3em;
 }
 
-.form-group > .radio > label,
-.form-group > .checkbox > label {
-  padding-bottom: 8px;
-}
-
-.form-group.required > .radio > label::before {
-  content: "";
-}
-
-.radio input, .checkbox input {
-  float: left;
-  clear: left;
-  width: auto;
-}
-
-.radio label, .checkbox label {
-  float: left;
-  width: auto;
-  padding-left: 0.5em;
-}
-
-.description {
-  clear: left;
-  margin-top: 5px;
-  margin-left: 15px;
+.form-element-radios label, .form-element-checkboxes label {
+    float: left;
+    width: auto;
+    margin-top: 0.2em;
 }
