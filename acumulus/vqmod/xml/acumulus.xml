@@ -7,38 +7,25 @@
     <link>https://www.siel.nl/acumulus/</link>
 
     <file name="admin/model/sale/order.php">
-        <operation info="End of addOrder: send to Acumulus (if deemed necessary based on new status). This search string appears at the end of both orderCreated() and orderUpdated(), therefore we use the index attribute.">
+        <operation error="skip" info="End of addOrder: send to Acumulus (if deemed necessary based on new status). This search string appears at the end of both orderCreated() and orderUpdated(), therefore we use the index attribute.">
             <search index="1" position="after"><![CDATA[$this->db->query("UPDATE `" . DB_PREFIX . "order` SET total = '" . (float)$total]]></search>
             <add><![CDATA[
 		$this->load->model('module/acumulus');
-		$this->model_module_acumulus->orderCreated($order_id, $data['order_status_id']);
+		$this->model_module_acumulus->eventOrderUpdate($order_id);
 			]]></add>
         </operation>
-        <operation info="Begin of editOrder: save old status id">
-            <search position="after"><![CDATA[public function editOrder(]]></search>
-            <add><![CDATA[
-		$this->load->model('module/acumulus');
-		$this->model_module_acumulus->orderUpdateStart($order_id, $data['order_status_id']);
-			]]></add>
-        </operation>
-        <operation info="End of editOrder: send to Acumulus (if deemed necessary based on old and new status). This search string appears at the end of both addOrder() and editOrder(), therefore we use the index attribute.">
+        <operation error="skip" info="End of editOrder: send to Acumulus (if deemed necessary based on new status). This search string appears at the end of both addOrder() and editOrder(), therefore we use the index attribute.">
             <search index="2" position="after"><![CDATA[$this->db->query("UPDATE `" . DB_PREFIX . "order` SET total = '" . (float)$total]]></search>
             <add><![CDATA[
-		$this->model_module_acumulus->orderUpdated();
-			]]></add>
-        </operation>
-        <operation info="Begin of addOrderHistory: save old status id">
-            <search position="after"><![CDATA[public function addOrderHistory(]]></search>
-            <add><![CDATA[
 		$this->load->model('module/acumulus');
-		$this->model_module_acumulus->orderUpdateStart($order_id, $data['order_status_id']);
+		$this->model_module_acumulus->eventOrderUpdate($order_id);
 			]]></add>
         </operation>
-        <!-- This search string should appear at the end of addOrderHistory() -->
-        <operation info="End of addOrderHistory: send to Acumulus (if deemed necessary based on old and new status)">
+        <operation error="skip" info="End of addOrderHistory: send to Acumulus (if deemed necessary based on old and new status)">
             <search position="after" offset="2"><![CDATA[$this->model_sale_voucher->sendVoucher(]]></search>
             <add><![CDATA[
-		$this->model_module_acumulus->orderUpdated();
+		$this->load->model('module/acumulus');
+		$this->model_module_acumulus->eventOrderUpdate($order_id);
 			]]></add>
         </operation>
     </file>
@@ -48,25 +35,18 @@
             <search position="after"><![CDATA[DUMMY OPERATION FOR DOCUMENTATION PURPOSES ONLY]]></search>
             <add><![CDATA[/* dummy operation */]]></add>
         </operation>
-        <operation info="End of confirm: send to Acumulus (if deemed necessary based on new status).">
+        <operation error="skip" info="End of confirm: send to Acumulus (if deemed necessary based on new status).">
             <search position="before"><![CDATA[// Send out order confirmation mail]]></search>
             <add><![CDATA[
 			$this->load->model('module/acumulus');
-			$this->model_module_acumulus->orderCreated($order_id, $order_status_id);
+			$this->model_module_acumulus->eventOrderUpdate($order_id);
 			]]></add>
         </operation>
-        <operation info="Begin of update: save old status id">
-            <search position="after"><![CDATA[if ($order_info && $order_info['order_status_id']) {]]></search>
-            <add><![CDATA[
-			$this->load->model('module/acumulus');
-			$this->model_module_acumulus->orderUpdateStart($order_id, $order_status_id);
-			]]></add>
-        </operation>
-        <!-- This search string should appear at the end of addOrderHistory() -->
-        <operation info="End of update: send to Acumulus (if deemed necessary based on old and new status)">
+        <operation error="skip" info="End of update: send to Acumulus (if deemed necessary based on old and new status)">
             <search position="before"><![CDATA[if ($notify) {]]></search>
             <add><![CDATA[
-		$this->model_module_acumulus->orderUpdated();
+		$this->load->model('module/acumulus');
+		$this->model_module_acumulus->eventOrderUpdate($order_id);
 			]]></add>
         </operation>
     </file>

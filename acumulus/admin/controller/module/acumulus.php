@@ -60,11 +60,11 @@ class ControllerModuleAcumulus extends Controller
             // Load autoloader
             require_once(DIR_SYSTEM . 'library/Siel/psr4.php');
 
+            Registry::setRegistry($this->registry);
             $languageCode = $this->language->get('code');
             if (empty($languageCode)) {
                 $languageCode = 'nl';
             }
-            Registry::setRegistry($this->registry);
             $this->acumulusConfig = new ShopConfig('OpenCart\\OpenCart1', $languageCode);
             $this->acumulusConfig->getTranslator()->add(new ModuleTranslations());
         }
