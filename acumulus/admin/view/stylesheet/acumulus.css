@@ -1,4 +1,4 @@
-.form-element {
+fieldset {
     margin-bottom: 1em;
 }
 
@@ -23,6 +23,10 @@ label, .label {
     margin-top: 0.1em;
     margin-left: 12em; /* should be the same as width of label. */
     font-style: italic;
+}
+
+.form-element {
+    margin-bottom: 1em;
 }
 
 .form-element-radios, .form-element-checkboxes {

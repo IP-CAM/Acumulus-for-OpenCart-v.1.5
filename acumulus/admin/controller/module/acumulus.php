@@ -230,7 +230,7 @@ class ControllerModuleAcumulus extends Controller
 
         // Set the action buttons (action + text).
         $this->data['action'] = $this->url->link($link, 'token=' . $this->session->data['token'], 'SSL');
-        $this->data['button_icon'] = $task === 'batch' ? 'fa-envelope-o' : 'fa-save';
+        $this->data['button_icon'] = $task === 'batch' ? 'mail.png' : 'module.png';
         $this->data['button_save'] = $this->t($button);
         $this->data['cancel'] = $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], 'SSL');
         $this->data['button_cancel'] = $this->t('button_cancel');
