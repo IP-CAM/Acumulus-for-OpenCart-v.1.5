@@ -1,18 +1,3 @@
-<?php
-/** @var Siel\Acumulus\Shop\ConfigForm $form */
-/** @var Siel\Acumulus\Helpers\FormRenderer $formRenderer */
-/** @var $header */
-/** @var $button_save */
-/** @var $button_cancel */
-/** @var $cancel */
-/** @var $heading_title */
-/** @var $breadcrumbs */
-/** @var $success */
-/** @var $error_warnings */
-/** @var $text_edit */
-/** @var string $action */
-/** @var $footer */
-?>
 <?php echo $header; ?>
 <div id="content">
     <div class="breadcrumb">

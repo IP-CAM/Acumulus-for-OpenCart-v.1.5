@@ -1,73 +1,39 @@
 <?php
 
-use Siel\Acumulus\Invoice\Source;
-use Siel\Acumulus\OpenCart\Helpers\Registry;
-use Siel\Acumulus\Shop\Config as ShopConfig;
-use Siel\Acumulus\Shop\ModuleTranslations;
+use Siel\Acumulus\OpenCart\Helpers\OcHelper;
 
+/** @noinspection PhpUndefinedClassInspection */
 /**
- * Class ControllerModuleAcumulus
- *
- * @property \ModelCheckoutOrder $model_checkout_order
- * @property \Language $language
- * @property \Loader $load
+ * Class ControllerModuleAcumulus is the Acumulus admin site controller.
  */
 class ControllerModuleAcumulus extends Controller {
-
-  /** @var \Siel\Acumulus\Shop\Config */
-  private $acumulusConfig;
+  /** @var \Siel\Acumulus\OpenCart\Helpers\OcHelper */
+  private $ocHelper = null;
 
   /**
-   * Helper method that initializes some object properties:
-   * - language
-   * - model_Setting_Setting
-   * - acumulusConfig
+   * Constructor.
+   *
+   * @param \Registry $registry
    */
-  private function init() {
-    if ($this->acumulusConfig === NULL) {
-      // Load models.
-      $this->load->model('checkout/order');
-
-      // Load autoloader
+  public function __construct($registry)
+  {
+    /** @noinspection PhpUndefinedClassInspection */
+    parent::__construct($registry);
+    if ($this->ocHelper === null) {
+      // Load autoloader and then our helper that contains OC1 and OC2
+      // shared code.
       require_once(DIR_SYSTEM . 'library/Siel/psr4.php');
-
-      $languageCode = $this->language->get('code');
-      if (empty($languageCode)) {
-        $languageCode = 'nl';
-      }
-      Registry::setRegistry($this->registry);
-      $this->acumulusConfig = new ShopConfig('OpenCart', $languageCode);
-      $this->acumulusConfig->getTranslator()->add(new ModuleTranslations());
+      $this->ocHelper = new OcHelper($this->registry, 'OpenCart\OpenCart1');
     }
   }
 
   /**
-   * Event handler that executes on the update of an order.
-   *
-   * The order is sent to Acumulus if it is changed to the status that
-   * triggers the sending to Acumulus.
+   * Event handler that executes on the creation or update of an order.
    *
    * @param int $order_id
    */
-  public function eventAddOrderHistory($order_id) {
-    $this->init();
-    $source = $this->acumulusConfig->getSource(Source::Order, $order_id);
-    $this->acumulusConfig->getManager()->sourceStatusChange($source);
+  public function eventOrderUpdate($order_id)
+  {
+    $this->ocHelper->eventOrderUpdate($order_id);
   }
-
-  /**
-   * Event handler that executes on the creation of an order.
-   *
-   * The order is sent to Acumulus if the status is the status that triggers the
-   * sending to Acumulus.
-   *
-   * @param int $order_id
-   */
-  public function eventAddOrder($order_id) {
-    // Check if the status of the created order is the one we should react on.
-    $this->init();
-    $source = $this->acumulusConfig->getSource(Source::Order, $order_id);
-    $this->acumulusConfig->getManager()->sourceStatusChange($source);
-  }
-
 }

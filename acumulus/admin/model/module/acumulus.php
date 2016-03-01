@@ -1,52 +1,39 @@
 <?php
 
-use Siel\Acumulus\Invoice\Source;
-use Siel\Acumulus\OpenCart\Helpers\Registry;
-use Siel\Acumulus\Shop\Config as ShopConfig;
-use Siel\Acumulus\Shop\ModuleTranslations;
+use Siel\Acumulus\OpenCart\Helpers\OcHelper;
 
 /** @noinspection PhpUndefinedClassInspection */
 /**
- * Class ModelModuleAcumulus
- *
- * @property \ModelCheckoutOrder $model_checkout_order
- * @property \Language $language
- * @property \Loader $load
+ * Class ModelModuleAcumulus is the Acumulus admin and catalog site controller.
  */
-class ModelModuleAcumulus extends Model {
+class ModelModuleAcumulus extends Model
+{
+    /** @var \Siel\Acumulus\OpenCart\Helpers\OcHelper */
+    private $ocHelper = null;
 
-  /** @var \Siel\Acumulus\Shop\Config */
-  private $acumulusConfig;
-
-  /**
-   * Helper method that initializes some object properties:
-   * - language
-   * - model_Setting_Setting
-   * - acumulusConfig
-   */
-  private function init() {
-    if ($this->acumulusConfig === NULL) {
-      // Load autoloader
-      require_once(DIR_SYSTEM . 'library/Siel/psr4.php');
-
-      $languageCode = $this->language->get('code');
-      if (empty($languageCode)) {
-        $languageCode = 'nl';
-      }
-      Registry::setRegistry($this->registry);
-      $this->acumulusConfig = new ShopConfig('OpenCart', $languageCode);
-      $this->acumulusConfig->getTranslator()->add(new ModuleTranslations());
+    /**
+     * Constructor.
+     *
+     * @param \Registry $registry
+     */
+    public function __construct($registry)
+    {
+        parent::__construct($registry);
+        if ($this->ocHelper === null) {
+            // Load autoloader and then our helper that contains OC1 and OC2
+            // and admin and catalog shared code.
+            require_once(DIR_SYSTEM . 'library/Siel/psr4.php');
+            $this->ocHelper = new OcHelper($this->registry, 'OpenCart\OpenCart1');
+        }
     }
-  }
 
-  /**
-   * Event handler that executes on the cration or update of an order.
-   *
-   * @param int $order_id
-   */
-  public function eventOrderUpdate($order_id) {
-    $this->init();
-    $source = $this->acumulusConfig->getSource(Source::Order, $order_id);
-    $this->acumulusConfig->getManager()->sourceStatusChange($source);
-  }
+    /**
+     * Event handler that executes on the creation or update of an order.
+     *
+     * @param int $order_id
+     */
+    public function eventOrderUpdate($order_id)
+    {
+        $this->ocHelper->eventOrderUpdate($order_id);
+    }
 }
