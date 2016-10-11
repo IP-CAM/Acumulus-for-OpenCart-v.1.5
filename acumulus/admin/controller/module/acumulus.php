@@ -6,7 +6,7 @@ use Siel\Acumulus\OpenCart\Helpers\OcHelper;
 
 /**
  * Class ControllerModuleAcumulus is the Acumulus admin site controller.
- * 
+ *
  * @property \Response response
  */
 class ControllerModuleAcumulus extends Controller
@@ -38,7 +38,7 @@ class ControllerModuleAcumulus extends Controller
      */
     public function install()
     {
-        $this->ocHelper->install();
+        return $this->ocHelper->install();
     }
 
     /**
@@ -50,7 +50,8 @@ class ControllerModuleAcumulus extends Controller
     }
 
     /**
-     * Main controller action: show/process the settings form for this module.
+     * Main controller action: show/process the basic settings form for this
+     * module.
      */
     public function index()
     {
@@ -59,7 +60,17 @@ class ControllerModuleAcumulus extends Controller
     }
 
     /**
-     * Main controller action: show/process the settings form for this module.
+     * Main controller action: show/process the advanced settings form for this
+     * module.
+     */
+    public function advanced()
+    {
+        $this->ocHelper->advancedConfig();
+        $this->renderForm();
+    }
+
+    /**
+     * Main controller action: show/process the batch form for this module.
      */
     public function batch()
     {
