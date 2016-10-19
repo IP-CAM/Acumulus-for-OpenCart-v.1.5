@@ -7,7 +7,7 @@
         <?php } ?>
     </div>
     <?php if ($error_messages) { ?>
-    <div class="warning">
+    <div class="error">
         <?php if (is_array($error_messages)) { ?>
         <ul>
             <?php foreach($error_messages as $message) { ?>
@@ -16,6 +16,19 @@
         </ul>
         <?php } else { ?>
         <?php echo $error_messages; ?>
+        <?php } ?>
+    </div>
+    <?php } ?>
+    <?php if ($warning_messages) { ?>
+    <div class="warning">
+        <?php if (is_array($warning_messages)) { ?>
+        <ul>
+            <?php foreach($warning_messages as $message) { ?>
+            <li><?php echo $message; ?></li>
+            <?php } ?>
+        </ul>
+        <?php } else { ?>
+        <?php echo $warning_messages; ?>
         <?php } ?>
     </div>
     <?php } ?>
