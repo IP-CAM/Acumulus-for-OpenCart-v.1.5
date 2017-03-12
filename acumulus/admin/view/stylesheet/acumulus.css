@@ -29,6 +29,11 @@ label, .label {
     font-style: italic;
 }
 
+.fieldset-desc {
+    margin-left: 0;
+    margin-bottom: 1.5em;
+}
+
 .form-element {
     margin-bottom: 1em;
 }
