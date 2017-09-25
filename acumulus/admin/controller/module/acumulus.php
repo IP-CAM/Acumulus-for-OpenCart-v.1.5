@@ -1,7 +1,5 @@
 <?php
 
-use Siel\Acumulus\OpenCart\Helpers\OcHelper;
-
 /** @noinspection PhpUndefinedClassInspection */
 
 /**
@@ -11,7 +9,7 @@ use Siel\Acumulus\OpenCart\Helpers\OcHelper;
  */
 class ControllerModuleAcumulus extends Controller
 {
-    /** @var \Siel\Acumulus\OpenCart\Helpers\OcHelper */
+    /** @var \Siel\Acumulus\OpenCart\OpenCart1\Helpers\OcHelper */
     private $ocHelper = null;
 
     /**
@@ -24,17 +22,32 @@ class ControllerModuleAcumulus extends Controller
         /** @noinspection PhpUndefinedClassInspection */
         parent::__construct($registry);
         if ($this->ocHelper === null) {
-            // Load autoloader and then our helper that contains OC1 and OC2
-            // shared code.
+            // Load autoloader, container and then our helper that contains
+            // OC1, OC2 and OC3 shared code.
             require_once(DIR_SYSTEM . 'library/Siel/psr4.php');
-            $this->ocHelper = new OcHelper($this->registry, 'OpenCart\OpenCart1');
+            $container = new \Siel\Acumulus\Helpers\Container($this->getShopNamespace());
+            $this->ocHelper = $container->getInstance('OcHelper', 'Helpers', array($this->registry, $container));
         }
+    }
+
+    /**
+     * Returns the Shop namespace to use for this OC version.
+     *
+     * @return string
+     *   The Shop namespace to use for this OC version.
+     */
+    protected function getShopNamespace()
+    {
+        $result = sprintf('OpenCart\OpenCart%1$u\OpenCart%1$u%2$u', substr(VERSION, 0, 1), substr(VERSION, 2, 1));
+        return $result;
     }
 
     /**
      * Install controller action, called when the module is installed.
      *
      * @return bool
+     *
+     * @throws \Exception
      */
     public function install()
     {
@@ -43,6 +56,8 @@ class ControllerModuleAcumulus extends Controller
 
     /**
      * Uninstall function, called when the module is uninstalled by an admin.
+     *
+     * @throws \Exception
      */
     public function uninstall()
     {
@@ -52,6 +67,8 @@ class ControllerModuleAcumulus extends Controller
     /**
      * Main controller action: show/process the basic settings form for this
      * module.
+     *
+     * @throws \Exception
      */
     public function index()
     {
@@ -82,6 +99,8 @@ class ControllerModuleAcumulus extends Controller
      * Explicit confirmation step to allow to retain the settings.
      *
      * The normal uninstall action will unconditionally delete all settings.
+     *
+     * @throws \Exception
      */
     public function confirmUninstall()
     {

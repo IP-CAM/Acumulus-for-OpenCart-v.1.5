@@ -1,14 +1,12 @@
 <?php
 
-use Siel\Acumulus\OpenCart\Helpers\OcHelper;
-
 /** @noinspection PhpUndefinedClassInspection */
 /**
  * Class ModelModuleAcumulus is the Acumulus admin and catalog site controller.
  */
 class ModelModuleAcumulus extends Model
 {
-    /** @var \Siel\Acumulus\OpenCart\Helpers\OcHelper */
+    /** @var \Siel\Acumulus\OpenCart\OpenCart1\Helpers\OcHelper */
     private $ocHelper = null;
 
     /**
@@ -20,11 +18,24 @@ class ModelModuleAcumulus extends Model
     {
         parent::__construct($registry);
         if ($this->ocHelper === null) {
-            // Load autoloader and then our helper that contains OC1 and OC2
-            // and admin and catalog shared code.
+            // Load autoloader, container and then our helper that contains
+            // OC1, OC2 and OC3 shared code.
             require_once(DIR_SYSTEM . 'library/Siel/psr4.php');
-            $this->ocHelper = new OcHelper($this->registry, 'OpenCart\OpenCart1');
+            $container = new \Siel\Acumulus\Helpers\Container($this->getShopNamespace());
+            $this->ocHelper = $container->getInstance('OcHelper', 'Helpers', array($this->registry, $container));
         }
+    }
+
+    /**
+     * Returns the Shop namespace to use for this OC version.
+     *
+     * @return string
+     *   The Shop namespace to use for this OC version.
+     */
+    protected function getShopNamespace()
+    {
+        $result = sprintf('OpenCart\OpenCart%1$u\OpenCart%1$u%2$u', substr(VERSION, 0, 1), substr(VERSION, 2, 1));
+        return $result;
     }
 
     /**
