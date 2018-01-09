@@ -8,10 +8,9 @@ interdiff.txt
 .idea/*
 
 # Ignore library
-**/Siel/
+**/siel/
 
 # Shared files
-acumulus/changelog.txt
 acumulus/license.txt
 acumulus/licentie-nl.pdf
 acumulus/leesmij.txt

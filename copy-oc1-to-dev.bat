@@ -1,8 +1,7 @@
 @echo off
-
 rem Ensure that all sub directories exist in development installation.
-mkdir D:\Projecten\Acumulus\OpenCart\www1\admin\model\module
-mkdir D:\Projecten\Acumulus\OpenCart\www1\catalog\model\module
+mkdir D:\Projecten\Acumulus\OpenCart\www1\admin\model\module 2> nul
+mkdir D:\Projecten\Acumulus\OpenCart\www1\catalog\model\module 2> nul
 
 rem Copy files in our folder structure to development installation.
 setlocal enabledelayedexpansion
@@ -19,4 +18,5 @@ popd
 popd
 setlocal disabledelayedexpansion
 
-mklink /J D:\Projecten\Acumulus\OpenCart\www1\system\library\Siel D:\Projecten\Acumulus\Webkoppelingen\OpenCart1\acumulus\system\library\Siel
+rmdir /s /q D:\Projecten\Acumulus\OpenCart\www1\system\library\siel
+mklink /J D:\Projecten\Acumulus\OpenCart\www1\system\library\siel D:\Projecten\Acumulus\Webkoppelingen\OpenCart1\acumulus\system\library\siel
