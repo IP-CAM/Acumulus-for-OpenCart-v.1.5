@@ -7,13 +7,5 @@ interdiff.txt
 # PHPStorm
 .idea/*
 
-# Ignore library
-**/siel/
-
-# Shared files
-acumulus/license.txt
-acumulus/licentie-nl.pdf
-acumulus/leesmij.txt
-
 # Resulting zip
 *.zip
