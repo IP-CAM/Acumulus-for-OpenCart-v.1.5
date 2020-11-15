@@ -55,3 +55,21 @@ label, .label {
     width: auto;
     margin-top: 0.2em;
 }
+
+/*
+ * Register form
+ */
+/* Align text with logo */
+#intro {
+  display: inline-block;
+  margin-left: 2%;
+  width: 70%;
+  position: relative;
+  top: -78px;
+
+}
+
+/* make remarks textarea a bit wider */
+#notes {
+  width: 80%;
+}
